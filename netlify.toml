@@ -3,6 +3,11 @@
   functions = "netlify/functions"
   publish = "Frontend"
 
+[build.environment]
+  # GOOGLE_CLIENT_ID is a public OAuth identifier required in frontend code by design;
+  # exempt it from secrets scanning so the build is not blocked.
+  SECRETS_SCAN_OMIT_KEYS = "GOOGLE_CLIENT_ID"
+
 [dev]
   command = "npm start"
   port = 5000
