@@ -1,5 +1,3 @@
-const GOOGLE_CLIENT_ID = "183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com";
-
 function login() {
   const email = document.getElementById("email").value.trim().toLowerCase();
   const password = document.getElementById("password").value.trim();
@@ -34,10 +32,15 @@ function login() {
     });
 }
 
-window.onload = function () {
-  if (typeof google !== "undefined") {
+window.onload = async function () {
+  if (typeof google === "undefined") return;
+
+  try {
+    const res = await fetch("/api/config");
+    const { googleClientId } = await res.json();
+
     google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
+      client_id: googleClientId,
       callback: handleGoogleLogin
     });
 
@@ -50,6 +53,8 @@ window.onload = function () {
         width: 320
       }
     );
+  } catch (err) {
+    console.error("Failed to load Google Sign-In config:", err);
   }
 };
 
