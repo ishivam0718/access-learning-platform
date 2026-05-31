@@ -11,10 +11,13 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey";
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com";
+const JWT_SECRET = process.env.JWT_SECRET;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/access_learning";
 const PORT = process.env.PORT || 5000;
+
+if (!JWT_SECRET) throw new Error("JWT_SECRET environment variable is required");
+if (!GOOGLE_CLIENT_ID) throw new Error("GOOGLE_CLIENT_ID environment variable is required");
 
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
 

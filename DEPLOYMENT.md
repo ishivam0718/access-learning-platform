@@ -53,7 +53,7 @@ This project is configured for Netlify deployment with:
      ```
      JWT_SECRET=your_secret_key_here
      MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/access_learning
-     GOOGLE_CLIENT_ID=183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com
+     GOOGLE_CLIENT_ID=your_google_client_id_here.apps.googleusercontent.com
      PORT=443
      ```
 7. Click "Deploy site"
