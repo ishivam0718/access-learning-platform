@@ -12,6 +12,26 @@
   to = "/.netlify/functions/api/:splat"
   status = 200
 
+[[redirects]]
+  from = "/"
+  to = "/01-index.html"
+  status = 200
+
+[[redirects]]
+  from = "/login"
+  to = "/02-login.html"
+  status = 200
+
+[[redirects]]
+  from = "/signup"
+  to = "/03-signup.html"
+  status = 200
+
+[[redirects]]
+  from = "/dashboard"
+  to = "/04-dashboard.html"
+  status = 200
+
 [env]
   [env.production]
     [env.production.context]
