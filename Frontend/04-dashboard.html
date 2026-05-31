@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard — Access Learning Platform</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+
+<div class="navbar">
+  <div class="logo">
+    <img src="images/logo.png" alt="Logo">
+    <span>Access Learning Platform</span>
+  </div>
+
+  <div class="profile-box">
+    <div class="avatar" id="avatar">S</div>
+
+    <div class="user-info">
+      <span class="user-name" id="username">Student</span>
+      <span class="user-email" id="email">student@gmail.com</span>
+    </div>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="hero-box">
+    <span class="hero-badge">Student Dashboard</span>
+    <h1>Welcome to Dashboard</h1>
+    <p>You are successfully logged in. Continue your learning journey, track progress, save resources, manage notes and prepare for real-world projects.</p>
+  </div>
+
+  <div class="quick-actions">
+    <a href="01-index.html"><i class="fa-solid fa-book-open"></i> Continue Learning</a>
+    <a href="#notes-section"><i class="fa-solid fa-note-sticky"></i> My Notes</a>
+    <a href="#project-section"><i class="fa-solid fa-code"></i> Project Ideas</a>
+    <a href="#practice-section"><i class="fa-solid fa-laptop-code"></i> Practice Zone</a>
+  </div>
+
+  <div class="progress-section">
+    <h2>Your Learning Progress</h2>
+
+    <div class="progress-info">
+      <p>✅ Completed Lessons: <span id="completedLessons">0</span></p>
+      <p>📚 Remaining Lessons: <span id="remainingLessons">0</span></p>
+      <p>📊 Progress: <span id="progressPercent">0%</span></p>
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <button class="complete-btn" onclick="completeLesson()">Complete One Lesson</button>
+    <button class="reset-btn" onclick="resetProgress()">Reset Progress</button>
+  </div>
+
+  <section class="dashboard-extra">
+
+    <div class="extra-card continue-card">
+      <i class="fa-solid fa-play"></i>
+      <h2>Continue Learning</h2>
+      <p>Pick up from where you left off and keep improving your frontend, backend, AI and programming skills step by step.</p>
+      <a href="01-index.html">Continue Now</a>
+    </div>
+
+    <div class="extra-card" id="notes-section">
+      <i class="fa-solid fa-note-sticky"></i>
+      <h2>My Notes</h2>
+      <p>Keep important coding points, formulas, short explanations, interview notes and quick revision material in one place.</p>
+      <a href="Notes/">Open Notes</a>
+    </div>
+
+    <div class="extra-card">
+      <i class="fa-solid fa-bookmark"></i>
+      <h2>Saved Resources</h2>
+      <p>Access your saved YouTube tutorials, GitHub repositories, PDFs, documentation links and useful learning platforms.</p>
+      <a href="01-index.html#ai-resources-block">View Resources</a>
+    </div>
+
+    <div class="extra-card">
+      <i class="fa-solid fa-bullseye"></i>
+      <h2>Weekly Goal</h2>
+      <p>Set a simple weekly target like completing lessons, building a small project or practicing coding daily.</p>
+      <a href="#practice-section">Start Goal</a>
+    </div>
+
+  </section>
+
+  <div class="section-title">
+    <h2>Explore Learning Areas</h2>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <h3>Frontend Development</h3>
+      <p>Learn HTML, CSS, JavaScript and React from beginner level with videos, notes and project ideas.</p>
+      <a href="01-index.html">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Backend Development</h3>
+      <p>Learn Node.js, Express, MongoDB, APIs, authentication and server-side development.</p>
+      <a href="01-index.html#backend">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Full Stack Development</h3>
+      <p>Combine frontend and backend skills to build complete real-world web applications.</p>
+      <a href="01-index.html#fullstack">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Software Development</h3>
+      <p>Learn programming fundamentals, problem solving, Git, GitHub, SDLC, debugging, testing and real-world project building.</p>
+      <a href="01-index.html#SoftwareDevelopement">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Artificial Intelligence</h3>
+      <p>Explore Python, Machine Learning, Deep Learning, neural networks and modern AI tools.</p>
+      <a href="01-index.html#AI">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Data Science</h3>
+      <p>Learn data analysis, visualization, statistics, datasets, machine learning basics and practical tools.</p>
+      <a href="01-index.html#Datascience">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Cybersecurity</h3>
+      <p>Learn networking, security basics, ethical hacking, protection methods and safe digital practices.</p>
+      <a href="01-index.html#cybersecurity">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>AI / ML Resources</h3>
+      <p>Explore curated GitHub repositories, AI guides, ML roadmaps, LLM resources and project collections.</p>
+      <a href="01-index.html#ai-resources-block">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Best Internship Platforms</h3>
+      <p>Find useful internship websites like Internshala, LinkedIn, AICTE, Forage, Unstop and more.</p>
+      <a href="01-index.html#internship-block">Explore</a>
+    </div>
+
+    <div class="card" id="practice-section">
+      <h3>Practice Programming Skills</h3>
+      <p>Practice coding, DSA, Python, Data Science and AI projects using popular learning platforms.</p>
+      <a href="01-index.html#ai-practice">Explore</a>
+    </div>
+
+    <div class="card">
+      <h3>Interview Preparation</h3>
+      <p>Follow a roadmap for coding interviews, core subjects, project explanation and HR preparation.</p>
+      <a href="01-index.html#roadmap">Explore</a>
+    </div>
+
+  </div>
+
+  <section class="project-section" id="project-section">
+    <div class="section-title">
+      <h2>Beginner Project Ideas</h2>
+    </div>
+
+    <div class="project-grid">
+      <div class="project-card">
+        <h3>Portfolio Website</h3>
+        <p>Create a personal portfolio with your skills, projects, contact section and resume link.</p>
+      </div>
+
+      <div class="project-card">
+        <h3>Notes App</h3>
+        <p>Build a simple notes app using HTML, CSS, JavaScript and localStorage.</p>
+      </div>
+
+      <div class="project-card">
+        <h3>Login System</h3>
+        <p>Create signup, login, dashboard and MongoDB user storage using Node.js and Express.</p>
+      </div>
+    </div>
+  </section>
+
+<section class="category-hub">
+  <div class="section-title">
+    <h2>Tech Learning Hub</h2>
+    <p>Category-wise best resources for coding, AI, career, projects and placements.</p>
+  </div>
+
+  <div id="techCategories"></div>
+</section>
+
+  <div class="footer">
+    <p>Access Learning Platform © 2026</p>
+  </div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+<button id="goTopBtn" onclick="goToTop()">↑</button>
+
+</body>
+</html>

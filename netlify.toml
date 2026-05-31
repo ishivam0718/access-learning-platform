@@ -1,0 +1,18 @@
+[build]
+  command = "npm run build"
+  functions = "netlify/functions"
+  publish = "Frontend"
+
+[dev]
+  command = "npm start"
+  port = 5000
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[env]
+  [env.production]
+    [env.production.context]
+      environment = { NODE_ENV = "production" }
