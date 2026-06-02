@@ -108,10 +108,21 @@ async function handler(event, context) {
   }
 
   try {
-    await connectDB();
-    
     const path = event.path.replace("/.netlify/functions/api", "");
     const method = event.httpMethod;
+
+    if (path === "/config" && method === "GET") {
+      return {
+        statusCode: 200,
+        headers: corsHeaders(),
+        body: JSON.stringify({
+          googleClientId: GOOGLE_CLIENT_ID || ""
+        })
+      };
+    }
+
+    await connectDB();
+
     const body = event.body ? JSON.parse(event.body) : {};
 
     if (path === "/test" && method === "GET") {

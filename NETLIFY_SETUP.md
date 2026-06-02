@@ -55,7 +55,7 @@ Under Site settings → Build & deploy → Environment:
 ```
 MONGO_URI = mongodb+srv://username:password@cluster.mongodb.net/access_learning
 JWT_SECRET = your-random-secret-key-here
-GOOGLE_CLIENT_ID = 183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com
+GOOGLE_CLIENT_ID = your-google-client-id.apps.googleusercontent.com
 ```
 
 ### 5. Redeploy
