@@ -1,5 +1,3 @@
-const GOOGLE_CLIENT_ID = "183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com";
-
 function login() {
   console.log("login clicked");
   const email = document.getElementById("email").value.trim().toLowerCase();
@@ -46,22 +44,30 @@ function login() {
     });
 }
 
-window.onload = function () {
-  if (typeof google !== "undefined") {
-    google.accounts.id.initialize({
-      client_id: GOOGLE_CLIENT_ID,
-      callback: handleGoogleLogin
-    });
+window.onload = async function () {
+  try {
+    const res = await fetch("/api/config");
+    const config = await res.json();
+    const googleClientId = config.googleClientId;
 
-    google.accounts.id.renderButton(
-      document.getElementById("googleBtn"),
-      {
-        theme: "outline",
-        size: "large",
-        text: "continue_with",
-        width: 320
-      }
-    );
+    if (googleClientId && typeof google !== "undefined") {
+      google.accounts.id.initialize({
+        client_id: googleClientId,
+        callback: handleGoogleLogin
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("googleBtn"),
+        {
+          theme: "outline",
+          size: "large",
+          text: "continue_with",
+          width: 320
+        }
+      );
+    }
+  } catch (err) {
+    console.error("Failed to load app config:", err);
   }
 };
 
