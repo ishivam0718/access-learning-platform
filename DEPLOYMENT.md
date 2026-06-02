@@ -25,7 +25,7 @@ This project is configured for Netlify deployment with:
 1. Create a MongoDB Atlas account and cluster
 2. Create a database user with username and password
 3. Whitelist your IP (or use 0.0.0.0 for allow all)
-4. Get your connection string: `mongodb+srv://username:password@cluster.mongodb.net/access_learning?retryWrites=true`
+4. Get your connection string: `<your_mongo_connection_string>`
 
 ## Step 2: Deploy to Netlify
 
@@ -51,9 +51,9 @@ This project is configured for Netlify deployment with:
    - Go to Site settings → Build & deploy → Environment
    - Add these variables:
      ```
-     JWT_SECRET=your_secret_key_here
-     MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/access_learning
-     GOOGLE_CLIENT_ID=183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com
+     JWT_SECRET=<your_secret_key_here>
+     MONGO_URI=<your_mongo_connection_string>
+     GOOGLE_CLIENT_ID=<your_google_client_id>
      PORT=443
      ```
 7. Click "Deploy site"
@@ -83,7 +83,7 @@ Set these in Netlify dashboard (Site settings → Environment):
 
 | Variable | Value |
 |----------|-------|
-| `MONGO_URI` | `mongodb+srv://user:pass@cluster.mongodb.net/access_learning` |
+| `MONGO_URI` | `<your_mongo_connection_string>` |
 | `JWT_SECRET` | Any random secret string |
 | `GOOGLE_CLIENT_ID` | Your Google OAuth client ID |
 
