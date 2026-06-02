@@ -4,18 +4,35 @@ const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 
 const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey";
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com";
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/access_learning";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const MONGO_URI = process.env.MONGO_URI;
 
-const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
+if (!GOOGLE_CLIENT_ID) {
+  console.warn("GOOGLE_CLIENT_ID is not configured. Google login will fail.");
+}
+
+if (!MONGO_URI) {
+  console.warn("MONGO_URI is not configured. Database access will fail.");
+}
+
+const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID || "");
 
 let cachedConnection = null;
 
 async function connectDB() {
   if (cachedConnection) return cachedConnection;
+
+  if (!MONGO_URI) {
+    throw new Error("MONGO_URI is not configured");
+  }
   
   try {
-    const conn = await mongoose.connect(MONGO_URI);
+    const conn = await mongoose.connect(MONGO_URI, {
+      serverSelectionTimeoutMS: 5000,
+      connectTimeoutMS: 5000,
+      socketTimeoutMS: 10000,
+      maxPoolSize: 5
+    });
     cachedConnection = conn;
     return conn;
   } catch (err) {
