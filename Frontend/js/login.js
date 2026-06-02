@@ -1,6 +1,7 @@
 const GOOGLE_CLIENT_ID = "183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com";
 
 function login() {
+  console.log("login clicked");
   const email = document.getElementById("email").value.trim().toLowerCase();
   const password = document.getElementById("password").value.trim();
 
@@ -16,7 +17,18 @@ function login() {
     },
     body: JSON.stringify({ email, password })
   })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      try {
+        const data = JSON.parse(text);
+        if (!res.ok) {
+          throw new Error(data.message || `Status ${res.status}`);
+        }
+        return data;
+      } catch (err) {
+        throw new Error(`Invalid response from backend: ${text}`);
+      }
+    })
     .then(data => {
       alert(data.message);
 
@@ -29,8 +41,8 @@ function login() {
       }
     })
     .catch(err => {
-      alert("Backend is not connected");
-      console.log(err);
+      alert("Login error: " + err.message);
+      console.error(err);
     });
 }
 
@@ -63,7 +75,18 @@ function handleGoogleLogin(response) {
       credential: response.credential
     })
   })
-    .then(res => res.json())
+    .then(async res => {
+      const text = await res.text();
+      try {
+        const data = JSON.parse(text);
+        if (!res.ok) {
+          throw new Error(data.message || `Status ${res.status}`);
+        }
+        return data;
+      } catch (err) {
+        throw new Error(`Invalid response from backend: ${text}`);
+      }
+    })
     .then(data => {
       alert(data.message);
 
@@ -76,7 +99,7 @@ function handleGoogleLogin(response) {
       }
     })
     .catch(err => {
-      alert("Google login backend error" + err.message);
+      alert("Google login backend error: " + err.message);
       console.log("Google frontend error:", err);
     });
 }
