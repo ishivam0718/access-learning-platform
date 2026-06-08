@@ -3,7 +3,6 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 
-<<<<<<< HEAD
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key_change_in_production";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
@@ -13,43 +12,14 @@ if (!JWT_SECRET || !GOOGLE_CLIENT_ID) {
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/access_learning";
 
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
-=======
-const JWT_SECRET = process.env.JWT_SECRET || "mysecretkey";
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const MONGO_URI = process.env.MONGO_URI;
-
-if (!GOOGLE_CLIENT_ID) {
-  console.warn("GOOGLE_CLIENT_ID is not configured. Google login will fail.");
-}
-
-if (!MONGO_URI) {
-  console.warn("MONGO_URI is not configured. Database access will fail.");
-}
-
-const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID || "");
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
 
 let cachedConnection = null;
 
 async function connectDB() {
   if (cachedConnection) return cachedConnection;
 
-<<<<<<< HEAD
   try {
     const conn = await mongoose.connect(MONGO_URI);
-=======
-  if (!MONGO_URI) {
-    throw new Error("MONGO_URI is not configured");
-  }
-  
-  try {
-    const conn = await mongoose.connect(MONGO_URI, {
-      serverSelectionTimeoutMS: 5000,
-      connectTimeoutMS: 5000,
-      socketTimeoutMS: 10000,
-      maxPoolSize: 5
-    });
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     cachedConnection = conn;
     return conn;
   } catch (err) {
@@ -62,12 +32,8 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: {
     type: String,
-<<<<<<< HEAD
     unique: true,
     sparse: true
-=======
-    unique: true
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
   },
   password: String,
   completedLessons: {
@@ -86,13 +52,10 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", userSchema);
 
-<<<<<<< HEAD
 function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
 function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
@@ -127,12 +90,8 @@ function auth(req) {
 
 async function handler(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
-<<<<<<< HEAD
 
   // Handle CORS preflight
-=======
-  
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
   if (event.httpMethod === "OPTIONS") {
     return {
       statusCode: 200,
@@ -143,7 +102,6 @@ async function handler(event, context) {
 
   try {
     await connectDB();
-<<<<<<< HEAD
 
     let path = event.path || "";
     path = path.replace("/.netlify/functions/api", "").replace(/^\/api/, "");
@@ -153,13 +111,6 @@ async function handler(event, context) {
     const body = event.body ? JSON.parse(event.body) : {};
 
     // Test endpoint
-=======
-    
-    const path = event.path.replace("/.netlify/functions/api", "");
-    const method = event.httpMethod;
-    const body = event.body ? JSON.parse(event.body) : {};
-
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     if (path === "/test" && method === "GET") {
       return {
         statusCode: 200,
@@ -171,10 +122,7 @@ async function handler(event, context) {
       };
     }
 
-<<<<<<< HEAD
     // Signup
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     if (path === "/signup" && method === "POST") {
       try {
         let { name, email, password } = body;
@@ -194,7 +142,6 @@ async function handler(event, context) {
         email = email.toLowerCase().trim();
         password = password.trim();
 
-<<<<<<< HEAD
         if (!isValidEmail(email)) {
           return {
             statusCode: 400,
@@ -206,8 +153,6 @@ async function handler(event, context) {
           };
         }
 
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
         if (password.length < 4) {
           return {
             statusCode: 400,
@@ -219,7 +164,6 @@ async function handler(event, context) {
           };
         }
 
-<<<<<<< HEAD
         if (name.length > 100) {
           return {
             statusCode: 400,
@@ -231,8 +175,6 @@ async function handler(event, context) {
           };
         }
 
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
         const existingUser = await User.findOne({ email });
 
         if (existingUser) {
@@ -268,30 +210,19 @@ async function handler(event, context) {
         };
 
       } catch (err) {
-<<<<<<< HEAD
         console.log("Signup error:", err.message);
-=======
-        console.log("Signup error:", err);
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
         return {
           statusCode: 500,
           headers: corsHeaders(),
           body: JSON.stringify({
             success: false,
-<<<<<<< HEAD
             message: err.code === 11000 ? "Email already exists" : "Signup failed"
-=======
-            message: "Signup failed"
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
           })
         };
       }
     }
 
-<<<<<<< HEAD
     // Login
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     if (path === "/login" && method === "POST") {
       try {
         let { email, password } = body;
@@ -310,7 +241,6 @@ async function handler(event, context) {
         email = email.toLowerCase().trim();
         password = password.trim();
 
-<<<<<<< HEAD
         if (!isValidEmail(email)) {
           return {
             statusCode: 400,
@@ -322,8 +252,6 @@ async function handler(event, context) {
           };
         }
 
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
         const user = await User.findOne({ email });
 
         if (!user) {
@@ -369,11 +297,7 @@ async function handler(event, context) {
         };
 
       } catch (err) {
-<<<<<<< HEAD
         console.log("Login error:", err.message);
-=======
-        console.log("Login error:", err);
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
         return {
           statusCode: 500,
           headers: corsHeaders(),
@@ -385,10 +309,7 @@ async function handler(event, context) {
       }
     }
 
-<<<<<<< HEAD
     // Google Login
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     if (path === "/google-login" && method === "POST") {
       try {
         const { credential } = body;
@@ -404,7 +325,6 @@ async function handler(event, context) {
           };
         }
 
-<<<<<<< HEAD
         if (!GOOGLE_CLIENT_ID) {
           return {
             statusCode: 500,
@@ -416,8 +336,6 @@ async function handler(event, context) {
           };
         }
 
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
         const ticket = await googleClient.verifyIdToken({
           idToken: credential,
           audience: GOOGLE_CLIENT_ID
@@ -470,31 +388,20 @@ async function handler(event, context) {
         };
 
       } catch (err) {
-<<<<<<< HEAD
         console.log("Google login error:", err.message || "Unknown error");
-=======
-        console.log("Google login error:", err);
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
 
         return {
           statusCode: 500,
           headers: corsHeaders(),
           body: JSON.stringify({
             success: false,
-<<<<<<< HEAD
             message: "Google login failed"
-=======
-            message: err.message
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
           })
         };
       }
     }
 
-<<<<<<< HEAD
     // Get Profile
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     if (path === "/profile" && method === "GET") {
       try {
         const authResult = auth(event);
@@ -508,7 +415,6 @@ async function handler(event, context) {
 
         const user = await User.findById(authResult.userId).select("-password");
 
-<<<<<<< HEAD
         if (!user) {
           return {
             statusCode: 404,
@@ -520,8 +426,6 @@ async function handler(event, context) {
           };
         }
 
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
         return {
           statusCode: 200,
           headers: corsHeaders(),
@@ -530,10 +434,7 @@ async function handler(event, context) {
             user
           })
         };
-<<<<<<< HEAD
 
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
       } catch (err) {
         console.log("Profile error:", err);
         return {
@@ -541,17 +442,12 @@ async function handler(event, context) {
           headers: corsHeaders(),
           body: JSON.stringify({
             success: false,
-<<<<<<< HEAD
             message: "Profile fetch failed"
-=======
-            message: "Failed to fetch profile"
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
           })
         };
       }
     }
 
-<<<<<<< HEAD
     // Get Progress
     if (path === "/progress" && method === "GET") {
       try {
@@ -655,37 +551,23 @@ async function handler(event, context) {
     }
 
     // Route not found
-=======
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     return {
       statusCode: 404,
       headers: corsHeaders(),
       body: JSON.stringify({
         success: false,
-<<<<<<< HEAD
         message: "Route not found"
       })
     };
 
   } catch (err) {
     console.error("Function error:", err);
-=======
-        message: "Endpoint not found"
-      })
-    };
-  } catch (err) {
-    console.error("Handler error:", err);
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
     return {
       statusCode: 500,
       headers: corsHeaders(),
       body: JSON.stringify({
         success: false,
-<<<<<<< HEAD
         message: "Internal server error"
-=======
-        message: "Server error"
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
       })
     };
   }

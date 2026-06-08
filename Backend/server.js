@@ -11,15 +11,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-<<<<<<< HEAD
 const JWT_SECRET = process.env.JWT_SECRET;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/access_learning";
-=======
-const JWT_SECRET = process.env.JWT_SECRET || "<your_jwt_secret_key>";
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "<your_google_client_id>";
-const MONGO_URI = process.env.MONGO_URI || "<your_mongo_connection_string>";
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
 const PORT = process.env.PORT || 5000;
 
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);

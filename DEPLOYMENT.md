@@ -19,7 +19,6 @@ Set the following environment variables in Netlify:
 
 All API endpoints are routed through `/.netlify/functions/api`:
 
-<<<<<<< HEAD
 - `POST /api/signup` - User registration
 - `POST /api/login` - Email/password login
 - `POST /api/google-login` - Google OAuth login
@@ -27,7 +26,9 @@ All API endpoints are routed through `/.netlify/functions/api`:
 - `GET /api/progress` - Get learning progress (requires auth token)
 - `POST /api/complete-lesson` - Mark lesson as complete (requires auth token)
 - `GET /api/test` - Health check endpoint
-=======
+
+## Step 1: MongoDB Setup
+
 1. Create a MongoDB Atlas account and cluster
 2. Create a database user with username and password
 3. Whitelist your IP (or use 0.0.0.0 for allow all)
@@ -125,7 +126,6 @@ access-learning-platform/
 ### CORS Issues
 - CORS headers are already set in api.js
 - If still issues, check browser console errors
->>>>>>> aacb54ff25667172363395fb5289e633b286cdaf
 
 ## Local Development
 
