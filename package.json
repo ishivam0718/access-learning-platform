@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Access Learning Platform - Frontend + Netlify Functions",
   "scripts": {
-    "build": "echo 'Build complete'"
+    "build": "echo 'Build complete'",
+    "dev": "netlify dev",
+    "start": "netlify dev"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -12,5 +14,8 @@
     "google-auth-library": "^10.6.2",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.6.0"
+  },
+  "devDependencies": {
+    "netlify-cli": "^17.0.0"
   }
 }

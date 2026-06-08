@@ -3,8 +3,12 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { OAuth2Client } = require("google-auth-library");
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key_change_in_production";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+
+if (!JWT_SECRET || !GOOGLE_CLIENT_ID) {
+  console.error("Missing required environment variables: JWT_SECRET or GOOGLE_CLIENT_ID");
+}
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/access_learning";
 
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID);
@@ -13,7 +17,7 @@ let cachedConnection = null;
 
 async function connectDB() {
   if (cachedConnection) return cachedConnection;
-  
+
   try {
     const conn = await mongoose.connect(MONGO_URI);
     cachedConnection = conn;
@@ -28,7 +32,8 @@ const userSchema = new mongoose.Schema({
   name: String,
   email: {
     type: String,
-    unique: true
+    unique: true,
+    sparse: true
   },
   password: String,
   completedLessons: {
@@ -46,6 +51,10 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model("User", userSchema);
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 function corsHeaders() {
   return {
@@ -81,7 +90,7 @@ function auth(req) {
 
 async function handler(event, context) {
   context.callbackWaitsForEmptyEventLoop = false;
-  
+
   // Handle CORS preflight
   if (event.httpMethod === "OPTIONS") {
     return {
@@ -93,8 +102,11 @@ async function handler(event, context) {
 
   try {
     await connectDB();
-    
-    const path = event.path.replace("/.netlify/functions/api", "");
+
+    let path = event.path || "";
+    path = path.replace("/.netlify/functions/api", "").replace(/^\/api/, "");
+    if (!path.startsWith("/")) path = "/" + path;
+
     const method = event.httpMethod;
     const body = event.body ? JSON.parse(event.body) : {};
 
@@ -130,6 +142,17 @@ async function handler(event, context) {
         email = email.toLowerCase().trim();
         password = password.trim();
 
+        if (!isValidEmail(email)) {
+          return {
+            statusCode: 400,
+            headers: corsHeaders(),
+            body: JSON.stringify({
+              success: false,
+              message: "Invalid email format"
+            })
+          };
+        }
+
         if (password.length < 4) {
           return {
             statusCode: 400,
@@ -137,6 +160,17 @@ async function handler(event, context) {
             body: JSON.stringify({
               success: false,
               message: "Password must be at least 4 characters"
+            })
+          };
+        }
+
+        if (name.length > 100) {
+          return {
+            statusCode: 400,
+            headers: corsHeaders(),
+            body: JSON.stringify({
+              success: false,
+              message: "Name too long"
             })
           };
         }
@@ -176,13 +210,13 @@ async function handler(event, context) {
         };
 
       } catch (err) {
-        console.log("Signup error:", err);
+        console.log("Signup error:", err.message);
         return {
           statusCode: 500,
           headers: corsHeaders(),
           body: JSON.stringify({
             success: false,
-            message: "Signup failed"
+            message: err.code === 11000 ? "Email already exists" : "Signup failed"
           })
         };
       }
@@ -206,6 +240,17 @@ async function handler(event, context) {
 
         email = email.toLowerCase().trim();
         password = password.trim();
+
+        if (!isValidEmail(email)) {
+          return {
+            statusCode: 400,
+            headers: corsHeaders(),
+            body: JSON.stringify({
+              success: false,
+              message: "Invalid email format"
+            })
+          };
+        }
 
         const user = await User.findOne({ email });
 
@@ -252,7 +297,7 @@ async function handler(event, context) {
         };
 
       } catch (err) {
-        console.log("Login error:", err);
+        console.log("Login error:", err.message);
         return {
           statusCode: 500,
           headers: corsHeaders(),
@@ -276,6 +321,17 @@ async function handler(event, context) {
             body: JSON.stringify({
               success: false,
               message: "Google credential missing"
+            })
+          };
+        }
+
+        if (!GOOGLE_CLIENT_ID) {
+          return {
+            statusCode: 500,
+            headers: corsHeaders(),
+            body: JSON.stringify({
+              success: false,
+              message: "Server error"
             })
           };
         }
@@ -332,14 +388,14 @@ async function handler(event, context) {
         };
 
       } catch (err) {
-        console.log("Google login error:", err);
+        console.log("Google login error:", err.message || "Unknown error");
 
         return {
           statusCode: 500,
           headers: corsHeaders(),
           body: JSON.stringify({
             success: false,
-            message: err.message
+            message: "Google login failed"
           })
         };
       }

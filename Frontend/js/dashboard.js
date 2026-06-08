@@ -272,7 +272,7 @@ function trackLearningClick() {
 }
 
 function loadProfile() {
-  fetch("/api/profile", {
+  fetch("https://access-learning-platform.onrender.com/api/profile", {
     headers: {
       "Authorization": token
     }
@@ -280,12 +280,12 @@ function loadProfile() {
   .then(res => res.json())
   .then(data => {
     if (data.success === true) {
-      const name = data.user.name;
-      const email = data.user.email;
+      const name = data.user.name || "Student";
+      const email = data.user.email || "student@gmail.com";
 
-      document.getElementById("username").innerText = name;
-      document.getElementById("email").innerText = email;
-      document.getElementById("avatar").innerText = name.charAt(0).toUpperCase();
+      document.getElementById("username").textContent = name;
+      document.getElementById("email").textContent = email;
+      document.getElementById("avatar").textContent = name.charAt(0).toUpperCase();
 
       localStorage.setItem("userName", name);
       localStorage.setItem("userEmail", email);
@@ -301,7 +301,7 @@ function loadProfile() {
 }
 
 function loadProgress() {
-  fetch("/api/progress", {
+  fetch("https://access-learning-platform.onrender.com/api/progress", {
     headers: {
       "Authorization": token
     }
@@ -320,7 +320,7 @@ function loadProgress() {
 }
 
 function completeLesson() {
-  fetch("/api/complete-lesson", {
+  fetch("https://access-learning-platform.onrender.com/api/complete-lesson", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

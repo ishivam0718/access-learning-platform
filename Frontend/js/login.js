@@ -1,4 +1,4 @@
-const GOOGLE_CLIENT_ID = "183209466249-a122ef74a78tgjo0prc7hucspv7plorq.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = "183209466249-u9sdjn40gtsai35cdluva8jqtnir92r8.apps.googleusercontent.com";
 
 function login() {
   const email = document.getElementById("email").value.trim().toLowerCase();
@@ -9,7 +9,7 @@ function login() {
     return;
   }
 
-  fetch("/api/login", {
+  fetch("https://access-learning-platform.onrender.com/api/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -54,7 +54,7 @@ window.onload = function () {
 };
 
 function handleGoogleLogin(response) {
-  fetch("/api/google-login", {
+  fetch("https://access-learning-platform.onrender.com/api/google-login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

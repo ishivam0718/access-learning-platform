@@ -13,7 +13,7 @@ function signup() {
     return;
   }
 
-  fetch("/api/signup", {
+  fetch("https://access-learning-platform.onrender.com/api/signup", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"

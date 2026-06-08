@@ -11,27 +11,6 @@
         }
     }
 
-            function signup() {
-            console.log("clicked");
-
-            fetch("/api/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name: "Shivam",
-                    email: "test@gmail.com",
-                    password: "1234"
-                })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-                    alert(data.message);
-                })
-                .catch(err => console.log(err));
-        }
 
            const topBtn = document.getElementById("topBtn");
 

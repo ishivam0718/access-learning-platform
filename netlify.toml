@@ -11,6 +11,7 @@
   from = "/api/*"
   to = "/.netlify/functions/api/:splat"
   status = 200
+  force = true
 
 [[redirects]]
   from = "/"
@@ -36,3 +37,8 @@
   [env.production]
     [env.production.context]
       environment = { NODE_ENV = "production" }
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Content-Type = "text/html"
